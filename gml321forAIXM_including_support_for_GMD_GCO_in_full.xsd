@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.opengis.net/gml/3.2" elementFormDefault="qualified"  version="1.1.0 2015-02-12>
+	<annotation>
+		<documentation>A GML subset for aviation, as defined in the OGC Discussion Paper 12-028r1. This additional XSD includes the elements necessary for the metadata schema ISO 19139 (the full GMD/GCO schemas)</documentation>
+	</annotation>
+	<include schemaLocation="gml321forAIXM.xsd"/>
+	<!-- Needed by gco/basicTypes.xsd -->
+	<import namespace="http://www.isotc211.org/2005/gmd" schemaLocation="http://schemas.opengis.net/iso/19139/20070417/gmd/gmd.xsd"/>
+	<!-- Needed by gco/basicTypes.xsd -->
+	<!-- dictionary.xsd -->
+	<element name="Definition" type="gml:DefinitionType" substitutionGroup="gml:AbstractGML">
+		<annotation>
+			<documentation>The basic gml:Definition element specifies a definition, which can be included in or referenced by a dictionary. 
+The content model for a generic definition is a derivation from gml:AbstractGMLType.  
+The gml:description property element shall hold the definition if this can be captured in a simple text string, or the gml:descriptionReference property element may carry a link to a description elsewhere.
+The gml:identifier element shall provide one identifier identifying this definition. The identifier shall be unique within the dictionaries using this definition. 
+The gml:name elements shall provide zero or more terms and synonyms for which this is the definition.
+The gml:remarks element shall be used to hold additional textual information that is not conceptually part of the definition but is useful in understanding the definition.</documentation>
+		</annotation>
+	</element>
+	<complexType name="DefinitionBaseType">
+		<complexContent>
+			<restriction base="gml:AbstractGMLType">
+				<sequence>
+					<!--element ref="gml:metaDataProperty" minOccurs="0" maxOccurs="unbounded"/-->
+					<element ref="gml:description" minOccurs="0"/>
+					<!--element ref="gml:descriptionReference" minOccurs="0"/-->
+					<element ref="gml:identifier"/>
+					<element ref="gml:name" minOccurs="0" maxOccurs="unbounded"/>
+				</sequence>
+				<attribute ref="gml:id" use="required"/>
+			</restriction>
+		</complexContent>
+	</complexType>
+	<complexType name="DefinitionType">
+		<complexContent>
+			<extension base="gml:DefinitionBaseType">
+				<sequence>
+					<element ref="gml:remarks" minOccurs="0"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<element name="remarks" type="string"/>
+	<!-- units.xsd -->
+	<element name="UnitDefinition" type="gml:UnitDefinitionType" substitutionGroup="gml:Definition">
+		<annotation>
+			<documentation>A gml:UnitDefinition is a general definition of a unit of measure. This generic element is used only for units for which no relationship with other units or units systems is known.
+The content model of gml:UnitDefinition adds three additional properties to gml:Definition, gml:quantityType, gml:quantityTypeReference and gml:catalogSymbol.  
+The gml:catalogSymbol property optionally gives the short symbol used for this unit. This element is usually used when the relationship of this unit to other units or units systems is unknown.</documentation>
+		</annotation>
+	</element>
+	<complexType name="UnitDefinitionType">
+		<complexContent>
+			<extension base="gml:DefinitionType">
+				<sequence>
+					<element ref="gml:quantityType" minOccurs="0"/>
+					<!--element ref="gml:quantityTypeReference" minOccurs="0"/-->
+					<!--element ref="gml:catalogSymbol" minOccurs="0"/-->
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<element name="quantityType" type="string">
+		<annotation>
+			<documentation>The gml:quantityType property indicates the phenomenon to which the units apply. This element contains an informal description of the phenomenon or type of physical quantity that is measured or observed. When the physical quantity is the result of an observation or measurement, this term is known as observable type or measurand.
+The use of gml:quantityType for references to remote values is deprecated.</documentation>
+		</annotation>
+	</element>
+	<!-- measures.xsd -->
+	<complexType name="ScaleType">
+		<simpleContent>
+			<extension base="gml:MeasureType"/>
+		</simpleContent>
+	</complexType>
+	<!-- referenceSystems.xsd -->
+	<complexType name="IdentifiedObjectType" abstract="true">
+		<annotation>
+			<documentation>gml:IdentifiedObjectType provides identification properties of a CRS-related object. In gml:DefinitionType, the gml:identifier element shall be the primary name by which this object is identified, encoding the "name" attribute in the UML model.
+Zero or more of the gml:name elements can be an unordered set of "identifiers", encoding the "identifier" attribute in the UML model. Each of these gml:name elements can reference elsewhere the object's defining information or be an identifier by which this object can be referenced.
+Zero or more other gml:name elements can be an unordered set of "alias" alternative names by which this CRS related object is identified, encoding the "alias" attributes in the UML model. An object may have several aliases, typically used in different contexts. The context for an alias is indicated by the value of its (optional) codeSpace attribute.
+Any needed version information shall be included in the codeSpace attribute of a gml:identifier and gml:name elements. In this use, the gml:remarks element in the gml:DefinitionType shall contain comments on or information about this object, including data source information.</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="gml:DefinitionType"/>
+		</complexContent>
+	</complexType>
+	<element name="AbstractCRS" type="gml:AbstractCRSType" abstract="true" substitutionGroup="gml:Definition">
+		<annotation>
+			<documentation>gml:AbstractCRS specifies a coordinate reference system which is usually single but may be compound. This abstract complex type shall not be used, extended, or restricted, in a GML Application Schema, to define a concrete subtype with a meaning equivalent to a concrete subtype specified in this document.</documentation>
+		</annotation>
+	</element>
+	<complexType name="AbstractCRSType" abstract="true">
+		<complexContent>
+			<extension base="gml:IdentifiedObjectType">
+				<sequence>
+					<element ref="gml:domainOfValidity" minOccurs="0" maxOccurs="unbounded"/>
+					<element ref="gml:scope" maxOccurs="unbounded"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<element name="domainOfValidity">
+		<annotation>
+			<documentation>The gml:domainOfValidity property implements an association role to an EX_Extent object as encoded in ISO/TS 19139, either referencing or containing the definition of that extent.</documentation>
+		</annotation>
+		<complexType>
+			<sequence minOccurs="0">
+				<element ref="gmd:EX_Extent"/>
+			</sequence>
+			<attributeGroup ref="gml:AssociationAttributeGroup"/>
+		</complexType>
+	</element>
+	<element name="scope" type="string">
+		<annotation>
+			<documentation>The gml:scope property provides a description of the usage, or limitations of usage, for which this CRS-related object is valid. If unknown, enter "not known".</documentation>
+		</annotation>
+	</element>
+</schema>
