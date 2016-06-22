@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schema xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.opengis.net/gml/3.2" elementFormDefault="qualified"  version="1.1.0 2015-02-12>
+<schema xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.opengis.net/gml/3.2" elementFormDefault="qualified"  version="1.1.0 2015-02-12">
 	<annotation>
 		<documentation>A GML subset for aviation, as defined in the OGC Discussion Paper 12-028r1. This additional XSD includes the elements necessary for the metadata schema ISO 19139 (the full GMD/GCO schemas)</documentation>
 	</annotation>
